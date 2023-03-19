@@ -56,6 +56,7 @@ class newopt:
 
 ## *To create a NeuralNetwork model*
 ```
+parameters will take the value as specified in below table
 nn=NeuralNetwork(num_layers,
                     hidden_size,
                     learning_rate,
