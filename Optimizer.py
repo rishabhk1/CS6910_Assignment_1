@@ -6,6 +6,10 @@ Each class in optimizer.py has same structure i.e constructor and optimize funct
 optimize function returns the updates weights and bias
 '''
 
+'''
+class for stochastic gradient descent
+optimize function returns weights,bias
+'''
 class sgd:
   def optimize(self,num_hidden_layers,weights,bias,learning_rate,d_weights,d_bias):
     for i in range(1,num_hidden_layers+2):
@@ -13,6 +17,10 @@ class sgd:
       bias[i]=bias[i]-learning_rate*d_bias[i]
     return weights,bias
 
+'''
+class for Momentum
+return optimize functions weights,bias
+'''
 class momentum:
   def __init__(self,neurons_list):
     self.update_w={}
@@ -31,6 +39,10 @@ class momentum:
 
     return weights,bias
 
+'''
+class for Nestrov accelerated gradient descent
+optimize function returns weights,bias,lookahead weights,lookahead bias
+'''
 class nag:
   def __init__(self,neurons_list,weights,bias):
     self.update_w={}
@@ -58,6 +70,10 @@ class nag:
 
     return weights,bias,self.weights_use,self.bias_use
 
+'''
+class for RMSprop
+optimize function returns weights,bias
+'''
 class rmsprop:
   def __init__(self,neurons_list):
     self.update_w={}
@@ -80,6 +96,10 @@ class rmsprop:
 
 
 
+'''
+class for Adam
+optimize function return weights,bias
+'''
 class adam:
   def __init__(self,neurons_list):
     self.update_w={}
@@ -118,7 +138,10 @@ class adam:
     return weights,bias
     
     
-
+'''
+class for Nadam
+optimize function return weights,bias
+'''
 class nadam:
   def __init__(self,neurons_list):
     self.update_w={}
