@@ -4,7 +4,7 @@
 DLAssignment1 contains Question 1,2,3,7,10.<br>
 Sweep contains Question 4,5,6
 
-**Helper.py**
+## **Helper.py**
 - Activation Functions
     - sigmoid
     - relu
@@ -25,7 +25,7 @@ def newfunc(layer,d=False):
         Compute new function
 ```
     
-**Optimizer.py**
+## **Optimizer.py**
   - sgd
   - adam
   - nadam
@@ -42,14 +42,14 @@ class newopt:
         update rule
         return weights,bias
 ```
-**NeuralNetwork.py**
+## **NeuralNetwork.py**
 - NeuralNetwork class
     - forward propogation
     - backward propogation
     - run
     - weight initialization
 
-To create a NeuralNetwork model
+## *To create a NeuralNetwork model*
 ```
 nn=NeuralNetwork(num_layers,
                     hidden_size,
@@ -64,16 +64,16 @@ nn=NeuralNetwork(num_layers,
                     weight_decay,
                     loss)
 ```
-To train model
+## *To train model*
 ```
 nn.run(train_images,train_labels,validation_images,validation_labels)
 ```
 
-**To evaluate**
+## **To evaluate**
 
-'''
+```
 python train.py
-'''
+```
   
     
    
