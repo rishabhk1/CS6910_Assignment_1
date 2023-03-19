@@ -10,6 +10,7 @@ Sweep contains Question 4,5,6
 - tensorflow
 
 ## **Helper.py**
+Helper class contains following activation and loss functions
 - Activation Functions
     - sigmoid
     - relu
@@ -31,6 +32,7 @@ def newfunc(layer,d=False):
 ```
     
 ## **Optimizer.py**
+Contains classes for following optimizers
   - sgd
   - adam
   - nadam
