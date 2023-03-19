@@ -72,6 +72,11 @@ nn=NeuralNetwork(num_layers,
 ```
 nn.run(train_images,train_labels,validation_images,validation_labels)
 ```
+## *To Test model*
+```
+accuracy,loss=nn.accuracy(test_images,test_labels)
+```
+
 
 ## **To evaluate**
 
