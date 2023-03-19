@@ -1,5 +1,6 @@
 # CS6910_Assignment_1
 ### Rishabh Kawediya CS22M072
+[Report Link](https://wandb.ai/cs22m072/DLCS6910/reports/CS6910-Assignment-1--VmlldzozNzQ5NDU0?accessToken=iynkul1hwkuxi0cd8hhk6dnvqiud26za8pve5rxafd6vf6w3enseqzr4thz844uf)
 
 DLAssignment1 contains Question 1,2,3,7,10.<br>
 Sweep contains Question 4,5,6
