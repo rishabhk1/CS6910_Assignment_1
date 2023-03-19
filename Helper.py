@@ -1,6 +1,10 @@
 import numpy as np
 import wandb
 
+'''
+Each function takes a vector as input
+if d==True then derivative is calculated of the respective function 
+'''
 class Helper:
   def sigmoid(self,layer,d=False):
       if(d==True):

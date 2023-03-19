@@ -33,9 +33,12 @@ class NeuralNetwork:
     if(loss_type=="cross_entropy"): self.loss_fn=NeuralNetwork.actobj.cross_entropy
     if(loss_type=="mean_square_error"): self.loss_fn=NeuralNetwork.actobj.mean_square_error
 
+  '''
+  Initializing weights and bias using the init_strat given by the user
+  '''
   def weight_initialization(self):
     self.neurons_list=[self.input_size]
-
+    #creating a neuron list, will contain inputsize, number of neuron in each hidden layersm and outputsize
     for i in range(self.num_hidden_layers):
       self.neurons_list.append(self.num_neurons_in_hidden_layer)
     self.neurons_list.append(self.output_size)
@@ -47,7 +50,12 @@ class NeuralNetwork:
       elif(self.init_strat=="xavier"):
         self.weights[i+1]=np.random.randn(self.neurons_list[i+1],self.neurons_list[i])*np.sqrt(2/(self.neurons_list[i+1]+self.neurons_list[i]))
         self.bias[i+1]=np.random.randn(self.neurons_list[i+1],1)*np.sqrt(2/(self.neurons_list[i+1]+1))
-  
+
+  '''
+  Performs forward propogation
+  Input: Input Vector 
+  Returns: Final layer Vector i.e prediction vector
+  ''' 
   def forward_propogation(self,x):
     self.activation_layer[0]=x
     for i in range(1,self.num_hidden_layers+1):
@@ -57,6 +65,11 @@ class NeuralNetwork:
     self.activation_layer[self.num_hidden_layers+1]=NeuralNetwork.actobj.softmax(self.pre_activation_layer[self.num_hidden_layers+1])    
     return self.activation_layer[self.num_hidden_layers+1]
 
+  '''
+  Performs Backpropogation propogation
+  Input: true_output vector and output vector i.e predicted output vector 
+  Returns: gradients of weights,bias and loss between true and predicted output
+  ''' 
   def back_propogation(self,true_output,output):
     d_pre_activation_layer={}
     d_weights={}
@@ -75,12 +88,19 @@ class NeuralNetwork:
 
     return d_weights,d_bias,self.loss_fn(true_output,output)
     
-
+  '''
+  Makes the gradients of weights, bias to zero
+  ''' 
   def flush_gradients(self):
     for i in range(len(self.neurons_list)-1):
       self.d_weights[i+1]=np.zeros((self.neurons_list[i+1],self.neurons_list[i]))
       self.d_bias[i+1]=np.zeros((self.neurons_list[i+1],1))
 
+  '''
+  Calculates the accuracy and loss
+  Input Images, true labels
+  outputs accuracy and loss
+  '''
   def accuracy(self,images,labels):
     count=0
     loss=0
@@ -92,17 +112,21 @@ class NeuralNetwork:
         count+=1
       loss+=self.loss_fn(true_output,output)
     
+    #L2 regularization
     for i in range(1,self.num_hidden_layers+2):
       loss+=(self.weight_decay/2)*np.sum(np.square(self.weights[i]))
 
     return count*1.0/images.shape[0], loss/images.shape[0]
     
-
+  '''
+  Trains the model
+  Input train images, train labels, validation images, validation labels
+  '''
   def run(self,train_images,train_labels,validation_images,validation_labels):
     self.input_size=train_images.shape[1]*train_images.shape[2]
     self.output_size=10
     self.weight_initialization()
-
+    #selection of optimizer based on the input
     if self.optimizer=="sgd":
       opt=sgd()
     elif self.optimizer=="momentum":
@@ -117,15 +141,18 @@ class NeuralNetwork:
       opt=nadam(self.neurons_list)
 
     t=0
+    #iterating over number of epoch
     for epoch_no in range(self.epoch):
       val_loss,tra_loss,tra_acc,val_acc=0,0,0,0
       loss=0
       batch_count=0
       self.flush_gradients()
+      #iterating over all the images in training dataset
       for i in range(train_images.shape[0]):
         batch_count+=1
         true_output=np.zeros((self.output_size,1))
         true_output[train_labels[i]]=1
+        #predicted output from forward propogation and using it in backpropogation
         output=self.forward_propogation(train_images[i].reshape((-1,1)))
         d_weights,d_bias,loss=self.back_propogation(true_output,output)
         for j in range(1,self.num_hidden_layers+2):
@@ -134,6 +161,7 @@ class NeuralNetwork:
 
 
         if(batch_count==self.batch):
+          #L2 Regularization
           for j in range(1,self.num_hidden_layers+2):
             self.d_weights[j]=self.d_weights[j]+self.weight_decay*self.weights[j]
 
@@ -157,7 +185,8 @@ class NeuralNetwork:
 
           self.flush_gradients()
 
-      if(batch_count>0):#remaining
+      if(batch_count>0):#remaining dataset which is not divisible by batch size
+          #L2 Regularization
           for j in range(1,self.num_hidden_layers+2):
             self.d_weights[j]=self.d_weights[j]+self.weight_decay*self.weights[j]
 
@@ -186,5 +215,5 @@ class NeuralNetwork:
       print(epoch_no+1,'Training loss',tra_loss,'Val loss',val_loss,'Training Accuracy',tra_acc,'Val Accuracy',val_acc)
       wandb.log({"Training loss":tra_loss,'Val loss':val_loss,'Training Accuracy':tra_acc,'Val Accuracy':val_acc})
     if self.optimizer=="nag":
-      self.weights=self.weights_use #for nag
-      self.bias=self.bias_use #for nag
+      self.weights=self.weights_use 
+      self.bias=self.bias_use 

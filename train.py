@@ -6,6 +6,7 @@ from Helper import *
 from Optimizer import *
 from NeuralNetwork import *
 
+
 parser=argparse.ArgumentParser()
 parser.add_argument("-wp","--wandb_project",type=str,default="DLCS6910")
 parser.add_argument("-we","--wandb_entity",type=str,default="cs22m072")
@@ -47,17 +48,23 @@ if args.activation=="ReLU":
 if args.weight_init=="Xavier":
   args.weight_init="xavier"
 
+
+
 (train_images, train_labels), (test_images, test_labels) = data.load_data()
+#Normalizing the data
 train_images = train_images / 255.0
 test_images = test_images / 255.0
+#shuffling the data
 idx = np.arange(train_images.shape[0])
 np.random.shuffle(idx)
 train_images=train_images[idx]
 train_labels=train_labels[idx]
+#separating validation dataset from train 
 validation_images=train_images[:6000]
 validation_labels=train_labels[:6000]
 train_images=train_images[6000:]
 train_labels=train_labels[6000:]
+
 
 wandb.run.name="hl_"+str(args.num_layers)+"_nn_"+str(args.hidden_size)+"_lr_"+str(args.learning_rate)+"_ep_"+str(args.epochs)+"_opt_"+args.optimizer+"_bs_"+str(args.batch_size)+"_act_"+args.activation+"_b_"+str(args.beta)+"_init_"+args.weight_init+"_l2_"+str(args.weight_decay)
 

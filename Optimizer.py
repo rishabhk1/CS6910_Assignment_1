@@ -1,6 +1,10 @@
 import numpy as np
 import wandb
 from Helper import *;
+'''
+Each class in optimizer.py has same structure i.e constructor and optimize function
+optimize function returns the updates weights and bias
+'''
 
 class sgd:
   def optimize(self,num_hidden_layers,weights,bias,learning_rate,d_weights,d_bias):
